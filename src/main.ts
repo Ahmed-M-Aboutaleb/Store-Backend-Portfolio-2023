@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 const PORT = parseInt(process.env.SERVER_PORT);
 const VERSION = 'v1';
@@ -10,5 +10,9 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix(VERSION);
     await app.listen(PORT);
+    Logger.log(
+        `🚀 Server running on ${PORT} Port and ${VERSION} version`,
+        'Bootstrap',
+    );
 }
 bootstrap();
