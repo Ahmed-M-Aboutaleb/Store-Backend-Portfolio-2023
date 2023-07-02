@@ -42,6 +42,10 @@ export class AuthService {
         const id: string = await uuidv4();
         dto.id = id;
         dto.password = hashPassword;
+        const user = await this.userModel.findOne({ email: dto.email });
+        if (user) {
+            throw new UnauthorizedException('User already exists');
+        }
         const createdUser = new this.userModel(dto);
         createdUser.save();
         const payload: { id: string; email: string } = {
