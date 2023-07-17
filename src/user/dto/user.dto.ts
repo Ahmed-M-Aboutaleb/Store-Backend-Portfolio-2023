@@ -25,7 +25,7 @@ export default class UserDto {
     readonly state: string;
     @IsNumber()
     @IsNotEmpty()
-    readonly zip: string;
+    readonly zip: number;
     @IsString()
     @IsNotEmpty()
     readonly country: string;
