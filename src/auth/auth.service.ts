@@ -39,15 +39,15 @@ export class AuthService {
     }
 
     async sginUp(dto: SignupDto): Promise<Token> {
+        const user = await this.userModelService.findOne(dto.email);
+        if (user) {
+            throw new UnauthorizedException('User already exists');
+        }
         const hashPassword: string = await argon2.hash(dto.password);
         const id: string = await uuidv4();
         dto.id = id;
         dto.password = hashPassword;
         dto.role = MEMBER_ROLE;
-        const user = await this.userModelService.findOne(dto.email);
-        if (user) {
-            throw new UnauthorizedException('User already exists');
-        }
         const createdUser = await this.userModelService.create(dto as UserDto);
         const payload: { id: string; email: string; role: number } = {
             id: id,
