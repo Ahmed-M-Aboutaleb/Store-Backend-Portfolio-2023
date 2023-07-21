@@ -8,10 +8,10 @@ export class AuthController {
     constructor(private authService: AuthService) {}
     @Post('signin')
     async signin(@Body() signinDto: SigninDto): Promise<Token> {
-        return this.authService.sginIn(signinDto);
+        return await this.authService.sginIn(signinDto);
     }
     @Post('signup')
     async signup(@Body() signupDto: SignupDto): Promise<Token> {
-        return this.authService.sginUp(signupDto);
+        return await this.authService.sginUp(signupDto);
     }
 }

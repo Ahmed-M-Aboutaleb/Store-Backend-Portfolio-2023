@@ -21,7 +21,7 @@ export class ProductController {
     constructor(private productService: ProductService) {}
     @Get(':page')
     async findByPage(@Param() params: PageDto) {
-        return this.productService.find(params.page);
+        return await this.productService.find(params.page);
     }
     @Post('/')
     @UseGuards(RolesGuard)
@@ -36,7 +36,7 @@ export class ProductController {
         } else {
             productDto.approved = false;
         }
-        return this.productService.create(productDto);
+        return await this.productService.create(productDto);
     }
 
     @Get('update/:id')
@@ -49,7 +49,12 @@ export class ProductController {
     ): Promise<ProductDto> {
         const seller = request['user'].id;
         const role = request['user'].role;
-        return this.productService.update(params.id, role, seller, product);
+        return await this.productService.update(
+            params.id,
+            role,
+            seller,
+            product,
+        );
     }
 
     @Get('delete/:id')
@@ -61,6 +66,6 @@ export class ProductController {
     ): Promise<ProductDto> {
         const seller = request['user'].id;
         const role = request['user'].role;
-        return this.productService.delete(params.id, role, seller);
+        return await this.productService.delete(params.id, role, seller);
     }
 }

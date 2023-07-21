@@ -16,7 +16,7 @@ export class ProductService {
     async find(page: number): Promise<ProductDto[]> {
         const limit = 10;
         const skip = (page - 1) * limit;
-        return this.productModel
+        return await this.productModel
             .find({ approved: true })
             .limit(limit)
             .skip(skip)
@@ -24,7 +24,7 @@ export class ProductService {
     }
 
     async findOne(id: string): Promise<ProductDto> {
-        return this.productModel.findById(id).exec();
+        return await this.productModel.findById(id).exec();
     }
 
     async create(product: CreateProductDto): Promise<ProductDto> {
@@ -32,7 +32,7 @@ export class ProductService {
         product.numReviews = 0;
         product.rating = 0;
         const newProduct = new this.productModel(product);
-        return newProduct.save();
+        return await newProduct.save();
     }
 
     async update(
@@ -46,11 +46,15 @@ export class ProductService {
                 new: true,
             });
         } else {
-            this.findOne(id).then((oldProduct) => {
+            this.findOne(id).then(async (oldProduct) => {
                 if (oldProduct.seller == seller) {
-                    return this.productModel.findByIdAndUpdate(id, product, {
-                        new: true,
-                    });
+                    return await this.productModel.findByIdAndUpdate(
+                        id,
+                        product,
+                        {
+                            new: true,
+                        },
+                    );
                 } else {
                     throw new UnauthorizedException();
                 }
@@ -64,11 +68,11 @@ export class ProductService {
         seller: string,
     ): Promise<ProductDto> {
         if (role == Role.Admin) {
-            return this.productModel.findByIdAndDelete(id).exec();
+            return await this.productModel.findByIdAndDelete(id).exec();
         } else {
-            this.findOne(id).then((product) => {
+            this.findOne(id).then(async (product) => {
                 if (product.seller == seller) {
-                    return this.productModel.findByIdAndDelete(id).exec();
+                    return await this.productModel.findByIdAndDelete(id).exec();
                 } else {
                     throw new UnauthorizedException();
                 }
