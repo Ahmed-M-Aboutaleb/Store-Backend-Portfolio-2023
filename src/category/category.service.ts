@@ -14,25 +14,25 @@ export class CategoryService {
     ) {}
 
     async findAll(): Promise<CategoryDto[]> {
-        return this.categoryModel.find();
+        return await this.categoryModel.find();
     }
 
     async findOne(id: string): Promise<CategoryDto> {
-        return this.categoryModel.findById(id);
+        return await this.categoryModel.findById(id);
     }
 
     async create(category: CreateCategoryDto): Promise<CategoryDto> {
         category.id = await uuidv4();
-        return this.categoryModel.create(category);
+        return await this.categoryModel.create(category);
     }
 
     async update(id: IdDto, category: CreateCategoryDto): Promise<CategoryDto> {
-        return this.categoryModel.findByIdAndUpdate(id, category, {
+        return await this.categoryModel.findByIdAndUpdate(id, category, {
             new: true,
         });
     }
 
     async delete(id: IdDto): Promise<CategoryDto> {
-        return this.categoryModel.findByIdAndDelete(id);
+        return await this.categoryModel.findByIdAndDelete(id);
     }
 }

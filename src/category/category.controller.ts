@@ -13,14 +13,14 @@ export class CategoryController {
 
     @Get('/')
     async findAll(): Promise<CategoryDto[]> {
-        return this.categoryService.findAll();
+        return await this.categoryService.findAll();
     }
 
     @Post('/')
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
     async create(@Body() category: CreateCategoryDto): Promise<CategoryDto> {
-        return this.categoryService.create(category);
+        return await this.categoryService.create(category);
     }
 
     @Post('update/:id')
@@ -30,13 +30,13 @@ export class CategoryController {
         @Param() id: IdDto,
         @Body() category: CategoryDto,
     ): Promise<CategoryDto> {
-        return this.categoryService.update(id, category);
+        return await this.categoryService.update(id, category);
     }
 
     @Post('delete/:id')
     @UseGuards(RolesGuard)
     @Roles(Role.Admin)
     async delete(@Param() id: IdDto): Promise<CategoryDto> {
-        return this.categoryService.delete(id);
+        return await this.categoryService.delete(id);
     }
 }

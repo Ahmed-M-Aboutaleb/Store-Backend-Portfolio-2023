@@ -6,6 +6,18 @@ This is the back-end for the store application. It is built using NestJS and use
 
 ## Installation
 
+Create a .env file in the root directory and add the following variables:
+
+```bash
+NODE_ENV=<your node environment>
+SERVER_PORT=<your server port>
+
+MONGO_URI=<your mongodb uri>
+JWT_SECRET=<your jwt secret>
+```
+
+Install the dependencies:
+
 ```bash
 $ yarn install
 ```
