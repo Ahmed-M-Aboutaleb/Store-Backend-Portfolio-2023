@@ -8,11 +8,17 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
+        }),
+        ThrottlerModule.forRoot({
+            ttl: 60,
+            limit: 10,
         }),
         MongooseModule.forRoot(process.env.MONGO_URI),
         AuthModule,
@@ -22,6 +28,12 @@ import { OrderModule } from './order/order.module';
         OrderModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard,
+        },
+    ],
 })
 export class AppModule {}
